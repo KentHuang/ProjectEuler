@@ -1,38 +1,31 @@
 #include <iostream>
-#include <vector>
 
 using std::cout;
 using std::endl;
-using std::vector;
 
+int main(){
+  int maxlen, maxn;
+  maxlen = 0;
+  for(int n = 2; n <= 1000; ++n){
 
+    int rest = 1;
+    int r0;
+    for(int i = 0; i < n; ++i) 
+      rest = (rest*10)%n;
+    r0 = rest;
 
-int main() {
+    int len = 0;
+    do {
+      rest = (rest*10)%n;
+      len++;
+    } while( rest!=r0 );
 
-  int max = 0;
-  const int max_its = 100;
-
-  for (int d = 2; d < 10; ++d) {
-    vector<int> result;
-    int i = 10;
-    while ((result.size() < max_its) && (i != 0)) {
-      int k = 1;
-      while ((i - k * d) >= 0) {
-        ++k;
-      }
-      i = (i - (--k * d)) * 10;
-      result.push_back(k);
+    if( len > maxlen ){
+      maxn = n;
+      maxlen = len;
     }
-    
-    if (result.size() < max_its) {
-      continue;
-    }    
 
-    for(int i = 0; i < result.size(); ++i) {
-      cout << result[i];
-    }
-    cout << "\n" << endl;
   }
-
+  cout << maxn << endl;
   return 0;
 }
