@@ -3,55 +3,42 @@
 #include <string>
 
 
-
-
-/*
 int main() {
-  int grid[5][5];
-  for (int i = 0; i < 5; ++i) {
-    for (int j = 0; j < 5; ++j) {
-      grid[j][i] = i*j;
-      std::cout << grid[j][i];
-    }
-  }
 
-  return 0;
-}
-*/
-
-int main() {
+  long maxProd = 0;
 
   int grid[20][20]; 
-  char c[4];
-  int maxSum = 0;
-      std::cout << "gothere1" << std::endl;
+  std::string s;
+  int count = 0;
   std::ifstream file ("euler11.txt");
-      std::cout << "gothere2" << std::endl;
   if (file.is_open()) {
-    std::cout << "gothere3" << std::endl;
-    for (int i = 0; i < 20; ++i) {
-      for (int j = 0; j < 20; ++j) {
-        std::cout << "gothere4" << std::endl;
-        if (file.get(c, 4)) {    
-          std::cout << "gothere5" << std::endl;
-          try {
-          //std::cout << ":" << (std::string)c << ":";
-            grid[j][i] = std::stoi(c);
-          //std::cout << grid[j][i] << ":";
-          } catch(const std::exception& e) { 
-            std::cout << e.what() << " omg" << std::endl;}
-        }
-      }
-    }
-
-    for (int i = 0; i < 16; ++i) {
-      for (int j = 0; i < 16; j++) {
-        int sum = grid[j][i] + grid[j+1][i+1] + grid[j+2][i+2] + grid[j+3][i+3]; 
-        if (sum > maxSum) { maxSum = sum; }
-      }
+    while (getline(file,s)) {
+      do {
+        grid[count/20][count%20] = std::stoi(s.substr((count%20)*3, 2));
+        ++count;
+      } while (count%20 != 0);
     }
     file.close();
   }
-  std::cout << maxSum << std::endl;
+
+  for (int i = 0; i < 16; ++i) {
+    for (int j = 0; j < 16; ++j) {
+      long prod1 = grid[j][i] * grid[j+1][i+1] * grid[j+2][i+2] * grid[j+3][i+3]; 
+      long prod2 = grid[j][i+3] * grid[j+1][i+2] * grid[j+2][i+1] * grid[j+3][i];
+      maxProd = prod1 > maxProd ? prod1 : maxProd;
+      maxProd = prod2 > maxProd ? prod2 : maxProd;
+    }
+  }
+
+  for (int i = 0; i < 16; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      long prod1 = grid[j][i] * grid[j][i+1] * grid[j][i+2] * grid[j][i+3];
+      long prod2 = grid[i][j] * grid[i+1][j] * grid[i+2][j] * grid[i+3][j];
+      maxProd = prod1 > maxProd ? prod1 : maxProd;
+      maxProd = prod2 > maxProd ? prod2 : maxProd;
+    }
+  }
+
+  std::cout << maxProd << std::endl;
   return 0;
 } 
