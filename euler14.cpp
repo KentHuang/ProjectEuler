@@ -10,35 +10,29 @@ long rule(long n) {
   return n;
 }
 
-int chain(std::map<long, int> table, long n, int count) {
-  return 0; 
+int chain(std::map<long, int>& table, long n, int count) {
+  if (table[n] != 0) { 
+    return table[n];
+  }
+  else {
+    long next = rule(n); 
+    return table[n] = count + chain(table, next, count); 
+  }
 }
 
 int main() {
 
-  int maxLength = 0;
-  long maxNumber = 0;
   std::map<long, int> table; 
   table[1] = 1;
 
+  long maxNumber;
+  long maxCount = 0;  
   for (long i = 2; i < 1000000; ++i) {
-    long count = 1;
-    long n = i;
-    while (table[i] == 0) {
-      n = rule(n);
-      if (table[n] != 0) {
-        count += table[n];
-        table[i] = count;
-      } else { ++count; }
-    }
-    if (count > maxNumber) {maxNumber = count; maxNumber = i;}
+    int n = i;
+    chain(table, n, 1); 
+    if (table[i] > maxCount) { maxCount = table[i]; maxNumber = i; }
   }
+ 
   cout << maxNumber << endl;
-  /*
-  for (std::map<long, int>::const_iterator iter = table.begin();
-       iter != table.end(); ++iter) {
-    std::cout << iter->first << ":" << iter->second << std::endl;
-  }
-  */
   return 0;
 }
