@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <ctime>
 
 using std::cout;
 using std::endl;
@@ -21,7 +22,11 @@ int chain(std::map<long, int>& table, long n, int count) {
 }
 
 int main() {
+  std::clock_t start;
+  double duration;
+  start = std::clock();
 
+  // Algorithm here
   std::map<long, int> table; 
   table[1] = 1;
 
@@ -34,5 +39,8 @@ int main() {
   }
  
   cout << maxNumber << endl;
+
+  duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+  std::cout<<"printf: "<< duration <<'\n';
   return 0;
 }
